@@ -5,6 +5,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_manager/constants/app_colors.dart' as my_color;
+import 'package:todo_manager/controllers/task_controller.dart';
+import 'package:todo_manager/models/task_model.dart';
 import 'package:todo_manager/widgets/custom_app_bar.dart';
 import 'package:todo_manager/widgets/custom_text_field.dart';
 import 'package:todo_manager/widgets/custom_toast_message.dart';
@@ -27,8 +29,8 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   String selectedRepeatMode = 'One-Time';
   List<String> repeatModeList = ['One-Time', 'Daily', 'Weekly', 'Monthly'];
   int _selectedColor = Random().nextInt(3);
-
   final toast = FToast();
+  final TaskController taskController = Get.put(TaskController());
 
   @override
   void initState() {
@@ -257,7 +259,7 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
 
   dataValidator() async {
     if (titleController.text.isNotEmpty) {
-      // _addTaskToDB();
+      _addTaskToDB();
       Get.back();
       await Future.delayed(const Duration(milliseconds: 600));
       _showBottomToast(
@@ -285,5 +287,25 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
       fadeDuration: 400,
       toastDuration: const Duration(milliseconds: 1500),
     );
+  }
+
+  _addTaskToDB() async {
+    int taskId = await taskController.addTask(
+      TaskModel(
+        title: titleController.text,
+        description: descriptionController.text.isEmpty
+            ? 'No description provided.'
+            : descriptionController.text,
+        isCompleted: 0,
+        date: DateFormat.yMd().format(_selectedDate),
+        startTime: startingTime,
+        endTime: endingTime,
+        remind: selectedRemindMinute,
+        taskTheme: _selectedColor,
+        repeat: selectedRepeatMode,
+      ),
+    );
+
+    print('Id = $taskId');
   }
 }
