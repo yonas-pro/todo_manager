@@ -2,10 +2,10 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:todo_manager/constants/app_color.dart' as my_color;
 import 'package:todo_manager/screens/add_task_screen.dart';
 import 'package:todo_manager/services/theme_service.dart';
+import 'package:todo_manager/widgets/custom_app_bar.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -27,7 +27,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _buildAppBar(),
+      appBar: customAppBar(
+        title: 'Today',
+        icon: Get.isDarkMode ? Icons.lightbulb_outline : Icons.lightbulb,
+        context: context,
+        onPressed: _changeTheme,
+      ),
       body: Column(
         children: [
           _buildDatePicker(),
@@ -37,48 +42,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  _buildAppBar() {
-    return AppBar(
-      backgroundColor: context.theme.backgroundColor,
-      title: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(height: 10),
-          Text(
-            'Today',
-            style: TextStyle(
-                color: Get.isDarkMode ? my_color.white : my_color.black),
-          ),
-          const SizedBox(height: 5),
-          Text(
-            DateFormat.yMMMMd().format(DateTime.now()),
-            style: TextStyle(
-              color: Get.isDarkMode
-                  ? Colors.grey[500]
-                  : Colors.grey.withOpacity(0.8),
-              fontSize: 13,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
-      actions: [
-        IconButton(
-          onPressed: _changeTheme,
-          icon: Icon(
-            Get.isDarkMode ? Icons.lightbulb_outline : Icons.lightbulb,
-            color: my_color.blue,
-          ),
-        ),
-      ],
-    );
-  }
-
   _changeTheme() {
     ThemeService().changeTheme();
     _showBottomToast(
       'Theme changed!',
-      Icons.home,
+      Icons.threesixty_sharp,
       my_color.blue.withOpacity(0.2),
     );
   }
@@ -156,7 +124,7 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
       backgroundColor: my_color.blue,
-      child: const Icon(Icons.post_add_outlined),
+      child: const Icon(Icons.post_add_outlined, color: my_color.white),
     );
   }
 }
