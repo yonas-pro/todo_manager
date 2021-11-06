@@ -33,4 +33,8 @@ class DatabaseHelper {
       taskModel.toJson(),
     );
   }
+
+  static query() async {
+    return await database!.query(tableName);
+  }
 }
