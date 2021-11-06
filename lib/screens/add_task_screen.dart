@@ -1,11 +1,13 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_manager/constants/app_colors.dart' as my_color;
 import 'package:todo_manager/widgets/custom_app_bar.dart';
 import 'package:todo_manager/widgets/custom_text_field.dart';
+import 'package:todo_manager/widgets/custom_toast_message.dart';
 
 class AddTaskScreen extends StatefulWidget {
   const AddTaskScreen({Key? key}) : super(key: key);
@@ -25,6 +27,14 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
   String selectedRepeatMode = 'One-Time';
   List<String> repeatModeList = ['One-Time', 'Daily', 'Weekly', 'Monthly'];
   int _selectedColor = Random().nextInt(3);
+
+  final toast = FToast();
+
+  @override
+  void initState() {
+    super.initState();
+    toast.init(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -245,5 +255,35 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
     );
   }
 
-  dataValidator() {}
+  dataValidator() async {
+    if (titleController.text.isNotEmpty) {
+      // _addTaskToDB();
+      Get.back();
+      await Future.delayed(const Duration(milliseconds: 600));
+      _showBottomToast(
+        message: 'Task created successfully',
+        icon: Icons.check,
+        color: my_color.blue,
+      );
+    } else if (titleController.text.isEmpty) {
+      _showBottomToast(
+        message: 'Title can not be empty',
+        icon: Icons.warning_amber_outlined,
+        color: my_color.pink,
+      );
+    }
+  }
+
+  _showBottomToast({
+    required String message,
+    required IconData icon,
+    required Color color,
+  }) {
+    toast.showToast(
+      child: CustomToastMessage(message: message, icon: icon, color: color),
+      gravity: ToastGravity.BOTTOM,
+      fadeDuration: 400,
+      toastDuration: const Duration(milliseconds: 1500),
+    );
+  }
 }

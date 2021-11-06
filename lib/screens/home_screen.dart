@@ -7,6 +7,7 @@ import 'package:todo_manager/constants/app_styles.dart';
 import 'package:todo_manager/screens/add_task_screen.dart';
 import 'package:todo_manager/services/theme_service.dart';
 import 'package:todo_manager/widgets/custom_app_bar.dart';
+import 'package:todo_manager/widgets/custom_toast_message.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -54,33 +55,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _showBottomToast(String message, IconData icon, Color color) {
     toast.showToast(
-      child: _buildToast(message, icon, color),
+      child: CustomToastMessage(message: message, icon: icon, color: color),
       gravity: ToastGravity.BOTTOM,
       fadeDuration: 400,
-      toastDuration: const Duration(milliseconds: 1200),
-    );
-  }
-
-  _buildToast(String message, IconData icon, Color color) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, color: Get.isDarkMode ? my_color.black : my_color.white),
-          const SizedBox(width: 10),
-          Text(
-            message,
-            style: TextStyle(
-              color: Get.isDarkMode ? my_color.black : my_color.white,
-            ),
-          ),
-        ],
-      ),
+      toastDuration: const Duration(milliseconds: 1500),
     );
   }
 
