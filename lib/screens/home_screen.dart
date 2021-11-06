@@ -1,8 +1,10 @@
+import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_manager/constants/app_color.dart' as my_color;
+import 'package:todo_manager/screens/add_task_screen.dart';
 import 'package:todo_manager/services/theme_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final toast = FToast();
+  DateTime _selectedDate = DateTime.now();
 
   @override
   void initState() {
@@ -25,13 +28,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: const Center(
-        child: Text('Testing'),
+      body: Column(
+        children: [
+          _buildDatePicker(),
+        ],
       ),
+      floatingActionButton: _buildFAB(),
     );
   }
 
-  AppBar _buildAppBar() {
+  _buildAppBar() {
     return AppBar(
       backgroundColor: context.theme.backgroundColor,
       title: Column(
@@ -68,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _changeTheme() {
+  _changeTheme() {
     ThemeService().changeTheme();
     _showBottomToast(
       'Theme changed!',
@@ -77,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _showBottomToast(String message, IconData icon, Color color) {
+  _showBottomToast(String message, IconData icon, Color color) {
     toast.showToast(
       child: _buildToast(message, icon, color),
       gravity: ToastGravity.BOTTOM,
@@ -86,7 +92,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Container _buildToast(String message, IconData icon, Color color) {
+  _buildToast(String message, IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
       decoration: BoxDecoration(
@@ -106,6 +112,51 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  _buildDatePicker() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
+      child: DatePicker(
+        DateTime.now(),
+        height: 78,
+        width: 48,
+        initialSelectedDate: DateTime.now(),
+        selectionColor: my_color.blue,
+        selectedTextColor: my_color.white,
+        dateTextStyle: const TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: Colors.grey,
+        ),
+        monthTextStyle: const TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w600,
+          color: Colors.grey,
+        ),
+        dayTextStyle: const TextStyle(
+          fontSize: 10,
+          fontWeight: FontWeight.w600,
+          color: Colors.grey,
+        ),
+        onDateChange: (newDate) => _selectedDate = newDate,
+      ),
+    );
+  }
+
+  _buildFAB() {
+    return FloatingActionButton(
+      onPressed: () async {
+        await Get.to(
+          () => const AddTaskScreen(),
+          transition: Transition.downToUp,
+          duration: const Duration(milliseconds: 600),
+          curve: Curves.easeIn,
+        );
+      },
+      backgroundColor: my_color.blue,
+      child: const Icon(Icons.post_add_outlined),
     );
   }
 }
