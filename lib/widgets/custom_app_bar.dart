@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:todo_manager/constants/app_color.dart' as my_color;
+import 'package:todo_manager/constants/app_colors.dart' as my_color;
 
 AppBar customAppBar({
   required String title,

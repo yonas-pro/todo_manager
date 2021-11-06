@@ -2,7 +2,8 @@ import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:todo_manager/constants/app_color.dart' as my_color;
+import 'package:todo_manager/constants/app_colors.dart' as my_color;
+import 'package:todo_manager/constants/app_styles.dart';
 import 'package:todo_manager/screens/add_task_screen.dart';
 import 'package:todo_manager/services/theme_service.dart';
 import 'package:todo_manager/widgets/custom_app_bar.dart';
@@ -93,21 +94,9 @@ class _HomeScreenState extends State<HomeScreen> {
         initialSelectedDate: DateTime.now(),
         selectionColor: my_color.blue,
         selectedTextColor: my_color.white,
-        dateTextStyle: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: Colors.grey,
-        ),
-        monthTextStyle: const TextStyle(
-          fontSize: 10,
-          fontWeight: FontWeight.w600,
-          color: Colors.grey,
-        ),
-        dayTextStyle: const TextStyle(
-          fontSize: 10,
-          fontWeight: FontWeight.w600,
-          color: Colors.grey,
-        ),
+        dateTextStyle: datePickerStyle.copyWith(fontSize: 20),
+        monthTextStyle: datePickerStyle,
+        dayTextStyle: datePickerStyle,
         onDateChange: (newDate) => _selectedDate = newDate,
       ),
     );

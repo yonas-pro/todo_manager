@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:todo_manager/constants/app_color.dart' as color;
+import 'package:todo_manager/constants/app_colors.dart' as color;
 
 class Themes {
   static final ThemeData light = ThemeData(
